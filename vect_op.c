@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vect_op.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/20 15:27:35 by yboualla          #+#    #+#             */
+/*   Updated: 2016/09/20 16:03:23 by yboualla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raytracer.h"
 
 /* Subtract two vectors and return the resulting vector */
@@ -18,7 +30,7 @@ float       vectorDot(t_vector3 *v1, t_vector3 *v2)
 
 void        vectorNormalize(t_vector3 *v1)
 {
-    float length;
+    double length;
     
     length = sqrt((v1->x * v1->x) + (v1->y * v1->y) + (v1->z * v1->z));
     v1->x /= length;
