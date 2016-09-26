@@ -6,11 +6,16 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 12:11:57 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/20 15:05:00 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 16:43:11 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raytracer.h"
+
+int					hex_color(t_color c)
+{
+	return ((c.r << 16) + (c.g << 8) + c.b);
+}
 
 inline void			draw_pixel(char *buf, int x, int y, int color)
 {

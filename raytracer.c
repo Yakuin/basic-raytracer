@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 15:49:07 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 16:43:16 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ void		err_handle(int errnum)
 
 void            launch_ray(t_env *e, int recursive_lvl, int x, int y)
 {
-	bool hit;
+	int hit;
 	t_ray ray;
 	
 	recursive_lvl = 42; // unused for now
 	recursive_lvl++;
 	ray_init(e, &ray, x, y);
 	hit = intersect(&ray, &e->primlist);
-	if (hit)
-		draw_pixel(e->buf, x, y, 400);
+	if (hit != -1)
+		draw_pixel(e->buf, x, y, hex_color(e->primlist.s[hit].c));
 	else
 		draw_pixel(e->buf, x, y, 1);
 }

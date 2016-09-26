@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:24 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 16:08:23 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 16:30:57 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,24 @@ void		parser(t_env *e)
 	e->primlist.s = (t_sphere *)malloc(sizeof(t_sphere) * e->primlist.nbspheres);
 	e->primlist.l = (t_light *)malloc(sizeof(t_light) * e->primlist.nblights);
 
-// ugly and temporary for tests, will change this asap
+// ugly and temporary for tests, will delete this asap once the parser is done
 	e->primlist.s[0].pos.x = 2;
     e->primlist.s[0].pos.y = 0;
     e->primlist.s[0].pos.z = 100;
     e->primlist.s[0].radius = 2;
+	e->primlist.s[0].c.r = 50;
+	e->primlist.s[0].c.g = 50;
+	e->primlist.s[0].c.b = 200;
+	e->primlist.s[0].material = 1;
 
 	e->primlist.s[1].pos.x = 2.5;
     e->primlist.s[1].pos.y = 0;
     e->primlist.s[1].pos.z = 200;
     e->primlist.s[1].radius = 3;
+	e->primlist.s[1].c.r = 200;
+	e->primlist.s[1].c.g = 50;
+	e->primlist.s[1].c.b = 50;
+	e->primlist.s[1].material = 1;
 }
 
 void        env_init(t_env *e)

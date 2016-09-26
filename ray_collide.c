@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:33 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 15:54:42 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 16:40:58 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool intersectRaySphere(t_ray *r, t_sphere *s)
 		return true;
 }
 
-bool intersect(t_ray *r, t_primlist *prim)
+int intersect(t_ray *r, t_primlist *prim)
 {
 	int i;
 
@@ -39,7 +39,7 @@ bool intersect(t_ray *r, t_primlist *prim)
 	while (++i < prim->nbspheres)
 	{
 		if(intersectRaySphere(r, &prim->s[i]))
-			return true;
+			return (i);
 	}
-	return false;
+	return (-1);
 }
