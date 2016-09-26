@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 16:39:08 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 17:59:29 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,25 @@ typedef struct	s_env
 	int			overlay;
 }				t_env;
 
-void        err_handle(int errnum);
-void        cam_init(t_env *e);
-void        raytrace(t_env *e);
-void        draw(t_env *e);
-void        env_init(t_env *e);
-void        ray_init(t_env *e, t_ray *ray, int x, int y);
-t_vector3   vectorSub(t_vector3 *v1, t_vector3 *v2);
-float       vectorDot(t_vector3 *v1, t_vector3 *v2);
-void        vectorNormalize(t_vector3 *v1);
-int        intersect(t_ray *r, t_primlist *prim);
+void		err_handle(int errnum);
+void		cam_init(t_env *e);
+void		raytrace(t_env *e);
+void		draw(t_env *e);
+void		env_init(t_env *e);
+void		ray_init(t_env *e, t_ray *ray, int x, int y);
+t_vector3	vectorSub(t_vector3 *v1, t_vector3 *v2);
+float		vectorDot(t_vector3 *v1, t_vector3 *v2);
+t_vector3	vectorScale(float c, t_vector3 *v);
+t_vector3	vectorAdd(t_vector3 *v1, t_vector3 *v2);
+void		vectorNormalize(t_vector3 *v1);
+int			intersect(t_ray *r, t_primlist *prim);
 void		draw_pixel(char *buf, int x, int y, int color);
 int			expose_event(t_env *e);
 void		print_overlay(t_env *e);
 int			print(t_env *e);
 void		err_handle(int errnum);
 int			exit_event(t_env *e);
-void        launch_ray(t_env *e, int recursive_lvl, int x, int y);
+void		launch_ray(t_env *e, int recursive_lvl, int x, int y);
 int			key_events_press(int keycode, t_env *e);
 void		parser(t_env *e);
 int			hex_color(t_color c);
