@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/20 15:18:48 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 15:49:07 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void            launch_ray(t_env *e, int recursive_lvl, int x, int y)
 	recursive_lvl = 42; // unused for now
 	recursive_lvl++;
 	ray_init(e, &ray, x, y);
-	hit = intersectRaySphere(&ray, &e->s);
+	hit = intersect(&ray, &e->primlist);
 	if (hit)
 		draw_pixel(e->buf, x, y, 400);
 	else

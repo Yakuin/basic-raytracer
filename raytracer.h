@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/20 15:52:10 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 16:06:43 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ typedef struct	s_sphere
     double		radius;
 }				t_sphere;
 
+typedef struct	s_light
+{
+    t_vector3	pos;
+    double		intensity;
+}				t_light;
+
+typedef struct	s_primlist
+{
+	int			nblights;
+	int			nbspheres;
+	t_sphere	*s;
+	t_light		*l;
+}				t_primlist;
+
 typedef struct	s_ray
 {
     t_vector3	ori;
@@ -51,13 +65,13 @@ typedef struct	s_camera
     double		foc_dist;
 }				t_camera;
 
-typedef struct		s_img
+typedef struct	s_img
 {
-	void			*data;
-	int				bpp;
-	int				size;
-	int				endian;
-}					t_img;
+	void		*data;
+	int			bpp;
+	int			size;
+	int			endian;
+}				t_img;
 
 typedef struct	s_env
 {
@@ -66,7 +80,8 @@ typedef struct	s_env
 	t_img		*img;
 	char		*buf;
     t_camera	cam;
-    t_sphere	s;
+    t_primlist	primlist;
+	int			overlay;
 }				t_env;
 
 void        err_handle(int errnum);
@@ -78,7 +93,7 @@ void        ray_init(t_env *e, t_ray *ray, int x, int y);
 t_vector3   vectorSub(t_vector3 *v1, t_vector3 *v2);
 float       vectorDot(t_vector3 *v1, t_vector3 *v2);
 void        vectorNormalize(t_vector3 *v1);
-bool        intersectRaySphere(t_ray *r, t_sphere *s);
+bool        intersect(t_ray *r, t_primlist *prim);
 void		draw_pixel(char *buf, int x, int y, int color);
 int			expose_event(t_env *e);
 void		print_overlay(t_env *e);
@@ -87,4 +102,5 @@ void		err_handle(int errnum);
 int			exit_event(t_env *e);
 void        launch_ray(t_env *e, int recursive_lvl, int x, int y);
 int			key_events_press(int keycode, t_env *e);
+void		parser(t_env *e);
 #endif

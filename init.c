@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:24 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/20 16:14:37 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 16:08:23 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void        cam_init(t_env *e)
     e->cam.pos.z = 60;
     e->cam.dir.x = 0;
     e->cam.dir.y = 0;
-    e->cam.dir.z = 0;
+    e->cam.dir.z = 1;
     e->cam.foc_dist = -(WIN_WIDTH / 2 * tan(FOV / 2));
 }
 
@@ -40,10 +40,30 @@ void        ray_init(t_env *e, t_ray *ray, int x, int y)
     ray->ori = e->cam.pos;
 }
 
+// TODO
+void		parser(t_env *e)
+{
+	e->primlist.nbspheres = 2;
+	e->primlist.nblights = 0;
+	e->primlist.s = (t_sphere *)malloc(sizeof(t_sphere) * e->primlist.nbspheres);
+	e->primlist.l = (t_light *)malloc(sizeof(t_light) * e->primlist.nblights);
+
+// ugly and temporary for tests, will change this asap
+	e->primlist.s[0].pos.x = 2;
+    e->primlist.s[0].pos.y = 0;
+    e->primlist.s[0].pos.z = 100;
+    e->primlist.s[0].radius = 2;
+
+	e->primlist.s[1].pos.x = 2.5;
+    e->primlist.s[1].pos.y = 0;
+    e->primlist.s[1].pos.z = 200;
+    e->primlist.s[1].radius = 3;
+}
+
 void        env_init(t_env *e)
 {
 	e->mlx = mlx_init();
-	e->win = mlx_new_window(e->mlx, WIN_WIDTH, WIN_HEIGHT, "1 TRUC 2 MERDE");
+	e->win = mlx_new_window(e->mlx, WIN_WIDTH, WIN_HEIGHT, "Basic Raytracer");
 	if (!(e->img = (t_img *)malloc(sizeof(t_img))))
 		err_handle(0);
 	e->img->data = mlx_new_image(e->mlx, WIN_WIDTH, WIN_HEIGHT);
@@ -52,11 +72,7 @@ void        env_init(t_env *e)
 		&e->img->bpp,
 		&e->img->size,
 		&e->img->endian);
+	e->overlay = 1;
 	cam_init(e);
-    
-// ugly and temporary for tests, will change this asap
-    e->s.pos.x = 2;
-    e->s.pos.y = 0;
-    e->s.pos.z = 600;
-    e->s.radius = 2;
+	parser(e);
 }
