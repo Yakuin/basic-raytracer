@@ -6,13 +6,12 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 15:27:35 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 18:02:29 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/26 18:03:46 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raytracer.h"
 
-/* Subtract two vectors and return the resulting vector */
 t_vector3   vectorSub(t_vector3 *v1, t_vector3 *v2)
 {
 	t_vector3 result;
@@ -28,7 +27,6 @@ float       vectorDot(t_vector3 *v1, t_vector3 *v2)
 	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z);
 }
 
-/* Calculate Vector x Scalar and return resulting Vector*/ 
 t_vector3 vectorScale(float c, t_vector3 *v)
 {
 	t_vector3 result;
@@ -39,7 +37,6 @@ t_vector3 vectorScale(float c, t_vector3 *v)
 	return (result);
 }
 
-/* Add two vectors and return the resulting vector */
 t_vector3 vectorAdd(t_vector3 *v1, t_vector3 *v2)
 {
 	t_vector3 result;
