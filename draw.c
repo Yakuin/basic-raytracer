@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 12:11:57 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 16:43:11 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/27 17:04:23 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int					print(t_env *e)
 {
 	int x;
 	int y;
+	t_ray ray;
 
 	y = -1;
     while (++y < WIN_HEIGHT)
@@ -40,7 +41,8 @@ int					print(t_env *e)
         x = -1;
         while (++x < WIN_WIDTH)
         {
-            launch_ray(e, 0, x, y);
+			ray_init(e, &ray, x, y);
+            launch_ray(e, x, y, &ray);
 		}
     }
 	mlx_put_image_to_window(e->mlx, e->win, e->img->data, 0, 0);

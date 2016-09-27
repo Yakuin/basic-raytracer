@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:24 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/27 14:36:49 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/27 16:30:54 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,24 @@ void        ray_init(t_env *e, t_ray *ray, int x, int y)
 void		parser(t_env *e)
 {
 	e->primlist.nbspheres = 2;
-	e->primlist.nblights = 0;
+	e->primlist.nblights = 2;
+	e->primlist.nbmaterial = 2;
 	e->primlist.s = (t_sphere *)malloc(sizeof(t_sphere) * e->primlist.nbspheres);
 	e->primlist.l = (t_light *)malloc(sizeof(t_light) * e->primlist.nblights);
+	e->primlist.m = (t_mat *)malloc(sizeof(t_mat) * e->primlist.nbmaterial);
+
 
 // ugly and temporary for tests, will delete this asap once the parser is done
+	e->primlist.m[0].diffuse.red = 255;
+	e->primlist.m[0].diffuse.green = 0;
+	e->primlist.m[0].diffuse.blue = 0;
+	e->primlist.m[0].reflection = 0.2;
+
+	e->primlist.m[1].diffuse.red = 0;
+	e->primlist.m[1].diffuse.green = 255;
+	e->primlist.m[1].diffuse.blue = 0;
+	e->primlist.m[1].reflection = 0.5;
+
 	e->primlist.s[0].pos.x = 2;
     e->primlist.s[0].pos.y = 0;
     e->primlist.s[0].pos.z = 200;
@@ -56,16 +69,30 @@ void		parser(t_env *e)
 	e->primlist.s[0].c.r = 50;
 	e->primlist.s[0].c.g = 50;
 	e->primlist.s[0].c.b = 200;
-	e->primlist.s[0].material = 1;
+	e->primlist.s[0].material = 0;
 
 	e->primlist.s[1].pos.x = 2.5;
-    e->primlist.s[1].pos.y = 0;
+    e->primlist.s[1].pos.y = 1;
     e->primlist.s[1].pos.z = 100;
     e->primlist.s[1].radius = 3;
 	e->primlist.s[1].c.r = 200;
 	e->primlist.s[1].c.g = 50;
 	e->primlist.s[1].c.b = 50;
 	e->primlist.s[1].material = 1;
+
+	e->primlist.l[0].pos.x = 0;
+    e->primlist.l[0].pos.y = 3;
+    e->primlist.l[0].pos.z = 100;
+	e->primlist.l[0].intensity.r = 250;
+	e->primlist.l[0].intensity.g = 250;
+	e->primlist.l[0].intensity.b = 250;
+
+	e->primlist.l[1].pos.x = 3.5;
+    e->primlist.l[1].pos.y = 3;
+    e->primlist.l[1].pos.z = 0;
+	e->primlist.l[0].intensity.r = 80;
+	e->primlist.l[0].intensity.g = 120;
+	e->primlist.l[0].intensity.b = 250;
 }
 
 void        env_init(t_env *e)

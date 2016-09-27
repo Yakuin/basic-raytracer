@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 16:43:16 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/27 17:09:36 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,24 @@ void		err_handle(int errnum)
 	ft_putnbr(errnum);
 }
 
-void            launch_ray(t_env *e, int recursive_lvl, int x, int y)
+void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 {
 	int hit;
 	t_ray ray;
-	
-	recursive_lvl = 42; // unused for now
-	recursive_lvl++;
-	ray_init(e, &ray, x, y);
-	hit = intersect(&ray, &e->primlist);
+	t_color c;
+	int depth;
+
+	depth = -1;
+	hit = intersect(ray, &e->primlist);
 	if (hit != -1)
-		draw_pixel(e->buf, x, y, hex_color(e->primlist.s[hit].c));
+	{
+		while (++depth >= MAX_DEPTH)
+		{
+			//TODO Light effects
+		}
+		draw_pixel(e->buf, x, y, hex_color(c));
+//		draw_pixel(e->buf, x, y, hex_color(e->primlist.s[hit].c));
+	}
 	else
 		draw_pixel(e->buf, x, y, 1);
 }

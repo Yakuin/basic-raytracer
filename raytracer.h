@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 17:59:29 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/27 16:21:06 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define WIN_WIDTH 1000
 # define WIN_HEIGHT 1000
 # define FOV 90
+# define MAX_DEPTH 15
 
 typedef struct  s_vector3
 {
@@ -47,18 +48,26 @@ typedef struct	s_sphere
 	int			material;
 }				t_sphere;
 
+typedef struct	s_mat
+{
+	t_color		diffuse;
+	float		reflection;
+}				t_mat;
+
 typedef struct	s_light
 {
     t_vector3	pos;
-    double		intensity;
+    t_color		intensity;
 }				t_light;
 
 typedef struct	s_primlist
 {
 	int			nblights;
 	int			nbspheres;
+	int			nbmaterial;
 	t_sphere	*s;
 	t_light		*l;
+	t_mat		*m;
 }				t_primlist;
 
 typedef struct	s_ray
@@ -111,7 +120,7 @@ void		print_overlay(t_env *e);
 int			print(t_env *e);
 void		err_handle(int errnum);
 int			exit_event(t_env *e);
-void		launch_ray(t_env *e, int recursive_lvl, int x, int y);
+void		launch_ray(t_env *e, int depth, t_ray ray);
 int			key_events_press(int keycode, t_env *e);
 void		parser(t_env *e);
 int			hex_color(t_color c);

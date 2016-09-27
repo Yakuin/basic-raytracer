@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:33 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/27 14:35:21 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/27 17:10:09 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static bool intersectRaySphere(t_ray *r, t_sphere *s, float *t)
 	float sqrtdiscr;
 	float t0;
 	float t1;
-
 
 	a = vectorDot(&r->dir, &r->dir);
 	dist = vectorSub(&r->ori, &s->pos);
@@ -50,10 +49,10 @@ static bool intersectRaySphere(t_ray *r, t_sphere *s, float *t)
 int intersect(t_ray *r, t_primlist *prim)
 {
 	int i;
-	float rslt[2];
+	float rslt[2]; // selected prim / hit distance
 	
 	rslt[0] = -1;
-	rslt[1] = 9999999;
+	rslt[1] = 9999999.0f;
 	i = -1;
 	while (++i < prim->nbspheres)
 	{
