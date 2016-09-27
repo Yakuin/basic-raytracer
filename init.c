@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:24 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 16:30:57 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/27 14:36:49 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void        cam_init(t_env *e)
 {
     e->cam.pos.x = 0;
     e->cam.pos.y = 0;
-    e->cam.pos.z = 60;
+    e->cam.pos.z = 220;
     e->cam.dir.x = 0;
     e->cam.dir.y = 0;
     e->cam.dir.z = 1;
@@ -25,16 +25,16 @@ void        cam_init(t_env *e)
 
 void        ray_init(t_env *e, t_ray *ray, int x, int y)
 {
-    t_vector3 B;
+    t_vector3 b;
     
-    B.x = (x - (WIN_WIDTH / 2)) + e->cam.dir.x;
-    B.y = (y - (WIN_HEIGHT / 2)) + e->cam.dir.y;
-    B.z = e->cam.foc_dist;
-	vectorNormalize(&B);
+    b.x = (x - (WIN_WIDTH / 2)) + e->cam.dir.x;
+    b.y = (y - (WIN_HEIGHT / 2)) + e->cam.dir.y;
+    b.z = e->cam.foc_dist;
+	vectorNormalize(&b);
     
-    ray->dir.x = B.x;// - e->cam.pos.x;
-	ray->dir.y = B.y;// - e->cam.pos.y;
-	ray->dir.z = B.z;// - e->cam.pos.z;
+    ray->dir.x = b.x;// - e->cam.pos.x;
+	ray->dir.y = b.y;// - e->cam.pos.y;
+	ray->dir.z = b.z;// - e->cam.pos.z;
     vectorNormalize(&ray->dir);
     
     ray->ori = e->cam.pos;
@@ -51,7 +51,7 @@ void		parser(t_env *e)
 // ugly and temporary for tests, will delete this asap once the parser is done
 	e->primlist.s[0].pos.x = 2;
     e->primlist.s[0].pos.y = 0;
-    e->primlist.s[0].pos.z = 100;
+    e->primlist.s[0].pos.z = 200;
     e->primlist.s[0].radius = 2;
 	e->primlist.s[0].c.r = 50;
 	e->primlist.s[0].c.g = 50;
@@ -60,7 +60,7 @@ void		parser(t_env *e)
 
 	e->primlist.s[1].pos.x = 2.5;
     e->primlist.s[1].pos.y = 0;
-    e->primlist.s[1].pos.z = 200;
+    e->primlist.s[1].pos.z = 100;
     e->primlist.s[1].radius = 3;
 	e->primlist.s[1].c.r = 200;
 	e->primlist.s[1].c.g = 50;
