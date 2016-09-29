@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/29 18:49:03 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/29 20:23:48 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # include <mlx.h>
 
 # define BG_COLOR 0x3399ff //r51 g153 b255
-# define WIN_WIDTH 500
-# define WIN_HEIGHT 500
-# define FOV 90
-# define MAX_DEPTH 4
+# define WIN_WIDTH 1000
+# define WIN_HEIGHT 1000
+# define FOV 30
+# define MAX_DEPTH 10
 
 typedef struct  s_vector3
 {
@@ -44,7 +44,6 @@ typedef struct	s_sphere
 {
     t_vector3	pos;
     double		radius;
-	t_color		c;
 	int			material;
 }				t_sphere;
 

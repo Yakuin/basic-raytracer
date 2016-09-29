@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/29 18:49:00 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/29 20:22:17 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void		err_handle(int errnum)
 	ft_putnbr(errnum);
 }
 
-//t_vector3 lightnewstart;
-
-//void lightiteration;
-
-//t_color 		raylight(t_env *e, ;
+// TODO :
+//t_color		shader_lambert;
+//t_vector3		lightnewstart;
+//void			lightiteration;
+//t_color 		raylight;
 
 void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 {
@@ -44,7 +44,6 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 			t_vector3 scaled = vectorScale(hit[1], &ray->dir);
 			t_vector3 newStart = vectorAdd(&ray->ori, &scaled);
 
-			/* Find the normal for this new vector at the point of intersection */
 			t_vector3 n = vectorSub(&newStart, &e->primlist.s[(int)hit[0]].pos);
 			float temp = vectorDot(&n, &n);
 			if (temp == 0) break;
@@ -52,10 +51,8 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 			temp = 1.0f / sqrtf(temp);
 			n = vectorScale(temp, &n);
 
-			/* Find the material to determine the colour */
 			t_mat currentMat = e->primlist.m[e->primlist.s[(int)hit[0]].material];
 			
-			/* Find the value of the light at this point */
 			int j = -1;
 			while (++j < e->primlist.nblights)
 			{
@@ -69,16 +66,13 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 				lightRay.ori = newStart;
 				lightRay.dir = vectorScale((1/t), &dist);
 				
-				/* Lambert diffusion */
 				float lambert = vectorDot(&lightRay.dir, &n) * coef; 
 				c.r += lambert * currentLight.intensity.r * currentMat.diffuse.r;
 				c.g += lambert * currentLight.intensity.g * currentMat.diffuse.g;
 				c.b += lambert * currentLight.intensity.b * currentMat.diffuse.b;
 			}
-			/* Iterate over the reflection */
 			coef *= currentMat.reflection;
 			
-			/* The reflected ray start and direction */
 			ray->ori = newStart;
 			float reflect = 2.0f * vectorDot(&ray->dir, &n);
 			t_vector3 tmp = vectorScale(reflect, &n);
@@ -87,6 +81,18 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 		c.r = c.r * 255.0f;
 		c.g = c.g * 255.0f;
 		c.b = c.b * 255.0f;
+		if (c.r > 255.0f)
+			c.r = 255.0f;
+		if (c.g > 255.0f)
+			c.g = 255.0f;
+		if (c.b > 255.0f)
+			c.b = 255.0f;
+		if (c.r < 0.0f)
+			c.r = 0.0f;
+		if (c.g < 0.0f)
+			c.g = 0.0f;
+		if (c.b < 0.0f)
+			c.b = 0.0f;
 		draw_pixel(e->buf, x, y, hex_color(c));
 	}
 	else
