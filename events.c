@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 12:13:36 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/26 16:08:03 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/29 17:50:50 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int					key_events_press(int keycode, t_env *e)
 	if (keycode == 125)
 		e->cam.pos.y -= 0.1;
 	if (keycode == 69)
-		e->cam.pos.z += 10;
+		e->cam.pos.z += 1;
 	if (keycode == 78)
-		e->cam.pos.z -= 10;
+		e->cam.pos.z -= 1;
 	print(e);
 	return (0);
 }

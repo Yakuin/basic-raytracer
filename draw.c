@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 12:11:57 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/27 17:04:23 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/09/29 17:22:01 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int					hex_color(t_color c)
 {
-	return ((c.r << 16) + (c.g << 8) + c.b);
+	return (((int)c.r << 16) + ((int)c.g << 8) + (int)c.b);
 }
 
 inline void			draw_pixel(char *buf, int x, int y, int color)
