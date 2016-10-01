@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/29 20:22:17 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/01 20:10:55 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,25 @@
 void		err_handle(int errnum)
 {
 	ft_putnbr(errnum);
+}
+
+void		color_check(t_color *c)
+{
+	c->r = c->r * 255.0f;
+	c->g = c->g * 255.0f;
+	c->b = c->b * 255.0f;
+	if (c->r > 255.0f)
+		c->r = 255.0f;
+	if (c->g > 255.0f)
+		c->g = 255.0f;
+	if (c->b > 255.0f)
+		c->b = 255.0f;
+	if (c->r < 0.0f)
+		c->r = 0.0f;
+	if (c->g < 0.0f)
+		c->g = 0.0f;
+	if (c->b < 0.0f)
+		c->b = 0.0f;	
 }
 
 // TODO :
@@ -31,9 +50,9 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 	int depth;
 	float coef;
 
-	c.r = 0;
-	c.g = 0;
-	c.b = 0;
+	c.r = 0.0;
+	c.g = 0.0;
+	c.b = 0.0;
 	coef = 1.0f;
 	depth = -1;
 	hit = intersect(ray, &e->primlist);
@@ -66,10 +85,19 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 				lightRay.ori = newStart;
 				lightRay.dir = vectorScale((1/t), &dist);
 				
-				float lambert = vectorDot(&lightRay.dir, &n) * coef; 
-				c.r += lambert * currentLight.intensity.r * currentMat.diffuse.r;
-				c.g += lambert * currentLight.intensity.g * currentMat.diffuse.g;
-				c.b += lambert * currentLight.intensity.b * currentMat.diffuse.b;
+				//calcul des ombres
+				bool inShadow = false;
+				float *hitb;
+				hitb = intersect(&lightRay, &e->primlist);
+				if (hitb[0] != -1)
+					inShadow = true;
+				if (!inShadow)
+				{
+					float lambert = vectorDot(&lightRay.dir, &n) * coef; 
+					c.r += lambert * currentLight.intensity.r * currentMat.diffuse.r;
+					c.g += lambert * currentLight.intensity.g * currentMat.diffuse.g;
+					c.b += lambert * currentLight.intensity.b * currentMat.diffuse.b;
+				}
 			}
 			coef *= currentMat.reflection;
 			
@@ -78,21 +106,7 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 			t_vector3 tmp = vectorScale(reflect, &n);
 			ray->dir = vectorSub(&ray->dir, &tmp);
 		}
-		c.r = c.r * 255.0f;
-		c.g = c.g * 255.0f;
-		c.b = c.b * 255.0f;
-		if (c.r > 255.0f)
-			c.r = 255.0f;
-		if (c.g > 255.0f)
-			c.g = 255.0f;
-		if (c.b > 255.0f)
-			c.b = 255.0f;
-		if (c.r < 0.0f)
-			c.r = 0.0f;
-		if (c.g < 0.0f)
-			c.g = 0.0f;
-		if (c.b < 0.0f)
-			c.b = 0.0f;
+		color_check(&c);
 		draw_pixel(e->buf, x, y, hex_color(c));
 	}
 	else

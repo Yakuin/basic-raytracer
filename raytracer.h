@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/29 20:23:48 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/01 20:07:43 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define BG_COLOR 0x3399ff //r51 g153 b255
 # define WIN_WIDTH 1000
 # define WIN_HEIGHT 1000
-# define FOV 30
+# define FOV 180
 # define MAX_DEPTH 10
 
 typedef struct  s_vector3
@@ -58,6 +58,12 @@ typedef struct	s_light
     t_vector3	pos;
     t_color		intensity;
 }				t_light;
+
+typedef struct	s_plane
+{
+	t_vector3	center;
+	t_vector3	dir;
+}				t_plane;
 
 typedef struct	s_primlist
 {
@@ -123,5 +129,6 @@ void		launch_ray(t_env *e, int x, int y, t_ray *ray);
 int			key_events_press(int keycode, t_env *e);
 void		parser(t_env *e);
 int			hex_color(t_color c);
+void		color_check(t_color *c);
 
 #endif

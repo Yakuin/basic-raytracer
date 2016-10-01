@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:33 by yboualla          #+#    #+#             */
-/*   Updated: 2016/09/29 16:11:58 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/01 20:12:37 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,16 @@ static bool intersectRaySphere(t_ray *r, t_sphere *s, float *t)
 	}
 	return (false);
 }
+
+//static bool intersectRayPlane(t_ray *r, t_plane *p, float *t)
+//{
+//	t_vector3 np; //plane normal	
+// si la normal de p est parallele a r, alors pas d'intersection
+//	if (r * np == 0)
+//		return (false);
+//	
+//	
+//}
 
 float *intersect(t_ray *r, t_primlist *prim)
 {
