@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/01 20:10:55 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/02 19:30:26 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,38 @@ void		color_check(t_color *c)
 //t_color		shader_lambert;
 //t_vector3		lightnewstart;
 //void			lightiteration;
-//t_color 		raylight;
+
+static void 		raylight(t_env *e, t_vector3 *newStart, t_vector3 *n, t_mat *currentMat, t_color *c, float *coef)
+{
+	int j = -1;
+	while (++j < e->primlist.nblights)
+	{
+		t_light currentLight = e->primlist.l[j];
+		t_vector3 dist = vectorSub(&currentLight.pos, newStart);
+		if (vectorDot(n, &dist) <= 0.0f)
+			continue;
+		float t = sqrtf(vectorDot(&dist,&dist));
+		if (t <= 0.0f)
+			continue;
+		
+		t_ray lightRay;
+		lightRay.ori = *newStart;
+		lightRay.dir = vectorScale((1/t), &dist);
+
+		bool inShadow = false;
+		float *hitb;
+		hitb = intersect(&lightRay, &e->primlist);
+		if (hitb[0] != -1)
+			inShadow = true;
+		if (!inShadow)
+		{
+			float lambert = vectorDot(&lightRay.dir, n) * *coef;
+			c->r += lambert * currentLight.intensity.r * currentMat->diffuse.r;
+			c->g += lambert * currentLight.intensity.g * currentMat->diffuse.g;
+			c->b += lambert * currentLight.intensity.b * currentMat->diffuse.b;
+		}
+	}
+}
 
 void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 {
@@ -65,40 +96,22 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 
 			t_vector3 n = vectorSub(&newStart, &e->primlist.s[(int)hit[0]].pos);
 			float temp = vectorDot(&n, &n);
-			if (temp == 0) break;
+			if (temp == 0)
+				break;
 			
 			temp = 1.0f / sqrtf(temp);
 			n = vectorScale(temp, &n);
 
-			t_mat currentMat = e->primlist.m[e->primlist.s[(int)hit[0]].material];
-			
-			int j = -1;
-			while (++j < e->primlist.nblights)
-			{
-				t_light currentLight = e->primlist.l[j];
-				t_vector3 dist = vectorSub(&currentLight.pos, &newStart);
-				if (vectorDot(&n, &dist) <= 0.0f) continue;
-				float t = sqrtf(vectorDot(&dist,&dist));
-				if (t <= 0.0f) continue;
-				
-				t_ray lightRay;
-				lightRay.ori = newStart;
-				lightRay.dir = vectorScale((1/t), &dist);
-				
-				//calcul des ombres
-				bool inShadow = false;
-				float *hitb;
-				hitb = intersect(&lightRay, &e->primlist);
-				if (hitb[0] != -1)
-					inShadow = true;
-				if (!inShadow)
-				{
-					float lambert = vectorDot(&lightRay.dir, &n) * coef; 
-					c.r += lambert * currentLight.intensity.r * currentMat.diffuse.r;
-					c.g += lambert * currentLight.intensity.g * currentMat.diffuse.g;
-					c.b += lambert * currentLight.intensity.b * currentMat.diffuse.b;
-				}
-			}
+			// getting current material
+			t_mat currentMat;
+			if (hit[2] == 0)
+				currentMat = e->primlist.m[e->primlist.s[(int)hit[0]].material];
+			else if (hit[2] == 1)
+				currentMat = e->primlist.m[e->primlist.p[(int)hit[0]].material];
+
+			// lights
+			raylight(e, &newStart, &n, &currentMat, &c, &coef);
+
 			coef *= currentMat.reflection;
 			
 			ray->ori = newStart;

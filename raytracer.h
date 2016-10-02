@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/01 20:07:43 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/02 19:35:48 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # define WIN_WIDTH 1000
 # define WIN_HEIGHT 1000
 # define FOV 180
-# define MAX_DEPTH 10
-
+# define MAX_DEPTH 15
+# define RAY_MAX_RANGE 10000.0f
 typedef struct  s_vector3
 {
     double		x;
@@ -61,16 +61,19 @@ typedef struct	s_light
 
 typedef struct	s_plane
 {
-	t_vector3	center;
-	t_vector3	dir;
+	t_vector3	origin;
+	t_vector3	normal;
+	int			material;
 }				t_plane;
 
 typedef struct	s_primlist
 {
 	int			nblights;
 	int			nbspheres;
+	int			nbplanes;
 	int			nbmaterial;
 	t_sphere	*s;
+	t_plane		*p;
 	t_light		*l;
 	t_mat		*m;
 }				t_primlist;

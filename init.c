@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:24 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/01 20:14:37 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/02 20:44:40 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,18 @@ void        ray_init(t_env *e, t_ray *ray, int x, int y)
 void		parser(t_env *e)
 {
 	e->primlist.nbspheres = 3;
-	e->primlist.nblights = 3;
+	e->primlist.nbplanes = 0;
+	e->primlist.nblights = 2;
 	e->primlist.nbmaterial = 3;
 	e->primlist.s = (t_sphere *)malloc(sizeof(t_sphere) * e->primlist.nbspheres);
+	e->primlist.p = (t_plane *)malloc(sizeof(t_plane) * e->primlist.nbplanes);
 	e->primlist.l = (t_light *)malloc(sizeof(t_light) * e->primlist.nblights);
 	e->primlist.m = (t_mat *)malloc(sizeof(t_mat) * e->primlist.nbmaterial);
 
 // ugly and temporary for tests, will delete this asap once the parser is done
 	e->primlist.m[0].diffuse.r = 1.0;
 	e->primlist.m[0].diffuse.g = 1.0;
-	e->primlist.m[0].diffuse.b = 0.0;
+	e->primlist.m[0].diffuse.b = 1.0;
 	e->primlist.m[0].reflection = 0.0;
 
 	e->primlist.m[1].diffuse.r = 0.0;
@@ -83,6 +85,14 @@ void		parser(t_env *e)
     e->primlist.s[2].pos.z = 0.0;
     e->primlist.s[2].radius = 100;
 	e->primlist.s[2].material = 2;
+/*
+	e->primlist.p[0].origin.x = 0;
+	e->primlist.p[0].origin.y = -300;
+	e->primlist.p[0].origin.z = 0;
+	e->primlist.p[0].normal.x = 0;
+	e->primlist.p[0].normal.y = 1;
+	e->primlist.p[0].normal.z = 0;
+	e->primlist.p[0].material = 0;*/
 
 	e->primlist.l[0].pos.x = 0.0;
     e->primlist.l[0].pos.y = 240.0;
@@ -92,18 +102,18 @@ void		parser(t_env *e)
 	e->primlist.l[0].intensity.b = 1.0;
 
 	e->primlist.l[1].pos.x = 640.0;
-    e->primlist.l[1].pos.y = 240.0;
-    e->primlist.l[1].pos.z = -100;
+	e->primlist.l[1].pos.y = 240.0;
+	e->primlist.l[1].pos.z = -100;
 	e->primlist.l[1].intensity.r = 0.6;
 	e->primlist.l[1].intensity.g = 0.7;
 	e->primlist.l[1].intensity.b = 1.0;
 
-	e->primlist.l[2].pos.x = 0.0;
-    e->primlist.l[2].pos.y = 0.0;
-    e->primlist.l[2].pos.z = -10;
-	e->primlist.l[2].intensity.r = 1.0;
-	e->primlist.l[2].intensity.g = 1.0;
-	e->primlist.l[2].intensity.b = 1.0;
+/*	e->primlist.l[1].pos.x = 0.0;
+    e->primlist.l[1].pos.y = 0.0;
+    e->primlist.l[1].pos.z = -10;
+	e->primlist.l[1].intensity.r = 1.0;
+	e->primlist.l[1].intensity.g = 1.0;
+	e->primlist.l[1].intensity.b = 1.0;*/
 }
 
 void        env_init(t_env *e)
