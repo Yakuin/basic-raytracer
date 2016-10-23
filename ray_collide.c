@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:33 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/02 19:35:16 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:52:34 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,24 @@ static bool intersectRaySphere(t_ray *r, t_sphere *s, float *t)
 
 static bool intersectRayPlane(t_ray *r, t_plane *p, float *t)
 {
-	float d;
-	float numer;
 	float denom;
 	float t2;
+	t_vector3 a;
 
-	d = -(vectorDot(&p->normal, &p->origin));
-	numer = vectorDot(&p->normal, &r->ori) + d;
 	denom = vectorDot(&p->normal, &r->dir);
-
-	if (denom <= 0)
-		return (false);
-
-	t2 = -(numer / denom);
-	if ((t2 > 0.001f) && (t2 < *t))
-		t[1] = t2;
-	return (true);
+	denom = -denom;
+    if (denom > 0.001f)
+	{
+		a = vectorSub(&p->origin, &r->ori);
+        t2 = vectorDot(&a, &p->normal) / denom;
+	t2 = -t2;
+		if (t2 < t[1] && t2 >= 0)
+		{
+			t[1] = t2;
+			return (true);
+		}
+	}
+	return (false);
 }
 
 float *intersect(t_ray *r, t_primlist *prim)
@@ -72,13 +74,13 @@ float *intersect(t_ray *r, t_primlist *prim)
 	float *rslt; // selected prim / hit distance / type of prim
 	
 	rslt = (float *)malloc(sizeof(float) * 3);
-	rslt[0] = -1;
-	rslt[1] = RAY_MAX_RANGE;
+	rslt[0] = -1; // prim id
+	rslt[1] = RAY_MAX_RANGE; // hit distance
 	rslt[2] = -1; // 0 = Sphere / 1 = Plan / 2 = Cone / 3 = Cylindre
 	i = -1;
 	while (++i < prim->nbspheres)
 	{
-		if(intersectRaySphere(r, &prim->s[i], rslt))
+		if (intersectRaySphere(r, &prim->s[i], rslt))
 		{
 			rslt[0] = i;
 			rslt[2] = 0;
@@ -87,7 +89,7 @@ float *intersect(t_ray *r, t_primlist *prim)
 	i = -1;
 	while (++i < prim->nbplanes)
 	{
-		if(intersectRayPlane(r, &prim->p[i], rslt))
+		if (intersectRayPlane(r, &prim->p[i], rslt))
 		{
 			rslt[0] = i;
 			rslt[2] = 1;

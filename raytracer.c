@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/02 19:30:26 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/18 16:16:53 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,13 @@ static void 		raylight(t_env *e, t_vector3 *newStart, t_vector3 *n, t_mat *curre
 			c->g += lambert * currentLight.intensity.g * currentMat->diffuse.g;
 			c->b += lambert * currentLight.intensity.b * currentMat->diffuse.b;
 		}
+		else
+		{
+			float lambert = vectorDot(&lightRay.dir, n) * *coef;
+			c->r += (lambert * currentLight.intensity.r * currentMat->diffuse.r) / 4;
+			c->g += (lambert * currentLight.intensity.g * currentMat->diffuse.g) / 4;
+			c->b += (lambert * currentLight.intensity.b * currentMat->diffuse.b) / 4;
+		}
 	}
 }
 
@@ -108,7 +115,6 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 				currentMat = e->primlist.m[e->primlist.s[(int)hit[0]].material];
 			else if (hit[2] == 1)
 				currentMat = e->primlist.m[e->primlist.p[(int)hit[0]].material];
-
 			// lights
 			raylight(e, &newStart, &n, &currentMat, &c, &coef);
 
