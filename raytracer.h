@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:52 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/02 19:35:48 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/31 05:43:43 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define WIN_HEIGHT 1000
 # define FOV 180
 # define MAX_DEPTH 15
-# define RAY_MAX_RANGE 10000.0f
+# define RAY_MAX_RANGE 100000.0f
 typedef struct  s_vector3
 {
     double		x;
@@ -121,7 +121,7 @@ float		vectorDot(t_vector3 *v1, t_vector3 *v2);
 t_vector3	vectorScale(float c, t_vector3 *v);
 t_vector3	vectorAdd(t_vector3 *v1, t_vector3 *v2);
 void		vectorNormalize(t_vector3 *v1);
-float		*intersect(t_ray *r, t_primlist *prim);
+float		*intersect(t_ray *r, t_primlist *prim, float lightdist);
 void		draw_pixel(char *buf, int x, int y, int color);
 int			expose_event(t_env *e);
 void		print_overlay(t_env *e);

@@ -6,7 +6,7 @@
 #    By: yboualla <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/09/20 14:57:09 by yboualla          #+#    #+#              #
-#    Updated: 2016/09/20 16:30:11 by yboualla         ###   ########.fr        #
+#    Updated: 2016/10/31 06:03:31 by yboualla         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -18,20 +18,21 @@ SRC =	raytracer.c \
 		init.c \
 		events.c \
 		overlay.c \
-		draw.c
+		draw.c \
+		parser.c
 
 OBJ =	$(SRC:.c=.o)
 
-LIB = -Llibft/ -lft -lmlx -framework AppKit -framework OpenGL
+LIB =	-Llibft/ -lft -lmlx -framework AppKit -framework OpenGL
 
-FLG = -Wextra -Wall -Werror
+FLG =	-Wextra -Wall -Werror
 
 $(NAME): $(OBJ)
 	@echo "\x1B[32mCompiling libft..."
 	@make -C "libft/"
 	@echo "Compiling basic raytracer..."
 	@gcc -c -Ofast $(FLG) $(SRC)
-	@gcc -o $(NAME) $(OBJ) $(LIB)
+	@gcc -g -o $(NAME) $(OBJ) $(LIB)
 	@echo "\x1B[37;1mDone !"
 	@echo "\x1B[37m"
 

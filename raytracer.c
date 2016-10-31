@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:44 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/18 16:16:53 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/31 06:01:44 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ void		color_check(t_color *c)
 static void 		raylight(t_env *e, t_vector3 *newStart, t_vector3 *n, t_mat *currentMat, t_color *c, float *coef)
 {
 	int j = -1;
+	bool inShadow;
+
 	while (++j < e->primlist.nblights)
 	{
+		inShadow = false;
 		t_light currentLight = e->primlist.l[j];
 		t_vector3 dist = vectorSub(&currentLight.pos, newStart);
 		if (vectorDot(n, &dist) <= 0.0f)
@@ -58,10 +61,9 @@ static void 		raylight(t_env *e, t_vector3 *newStart, t_vector3 *n, t_mat *curre
 		t_ray lightRay;
 		lightRay.ori = *newStart;
 		lightRay.dir = vectorScale((1/t), &dist);
-
-		bool inShadow = false;
+		
 		float *hitb;
-		hitb = intersect(&lightRay, &e->primlist);
+		hitb = intersect(&lightRay, &e->primlist, t);
 		if (hitb[0] != -1)
 			inShadow = true;
 		if (!inShadow)
@@ -70,13 +72,6 @@ static void 		raylight(t_env *e, t_vector3 *newStart, t_vector3 *n, t_mat *curre
 			c->r += lambert * currentLight.intensity.r * currentMat->diffuse.r;
 			c->g += lambert * currentLight.intensity.g * currentMat->diffuse.g;
 			c->b += lambert * currentLight.intensity.b * currentMat->diffuse.b;
-		}
-		else
-		{
-			float lambert = vectorDot(&lightRay.dir, n) * *coef;
-			c->r += (lambert * currentLight.intensity.r * currentMat->diffuse.r) / 4;
-			c->g += (lambert * currentLight.intensity.g * currentMat->diffuse.g) / 4;
-			c->b += (lambert * currentLight.intensity.b * currentMat->diffuse.b) / 4;
 		}
 	}
 }
@@ -93,19 +88,17 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 	c.b = 0.0;
 	coef = 1.0f;
 	depth = -1;
-	hit = intersect(ray, &e->primlist);
+	hit = intersect(ray, &e->primlist, -1);
 	if (hit[0] != -1)
 	{
 		while ((++depth <= MAX_DEPTH) && (coef > 0.0f))
 		{
 			t_vector3 scaled = vectorScale(hit[1], &ray->dir);
 			t_vector3 newStart = vectorAdd(&ray->ori, &scaled);
-
 			t_vector3 n = vectorSub(&newStart, &e->primlist.s[(int)hit[0]].pos);
 			float temp = vectorDot(&n, &n);
 			if (temp == 0)
 				break;
-			
 			temp = 1.0f / sqrtf(temp);
 			n = vectorScale(temp, &n);
 
@@ -117,9 +110,7 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 				currentMat = e->primlist.m[e->primlist.p[(int)hit[0]].material];
 			// lights
 			raylight(e, &newStart, &n, &currentMat, &c, &coef);
-
 			coef *= currentMat.reflection;
-			
 			ray->ori = newStart;
 			float reflect = 2.0f * vectorDot(&ray->dir, &n);
 			t_vector3 tmp = vectorScale(reflect, &n);
@@ -127,6 +118,7 @@ void            launch_ray(t_env *e, int x, int y, t_ray *ray)
 		}
 		color_check(&c);
 		draw_pixel(e->buf, x, y, hex_color(c));
+		//free(hit);
 	}
 	else
 		draw_pixel(e->buf, x, y, 1);

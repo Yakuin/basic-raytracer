@@ -6,7 +6,7 @@
 /*   By: yboualla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 14:21:33 by yboualla          #+#    #+#             */
-/*   Updated: 2016/10/18 17:52:34 by yboualla         ###   ########.fr       */
+/*   Updated: 2016/10/31 05:43:55 by yboualla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,33 +51,34 @@ static bool intersectRayPlane(t_ray *r, t_plane *p, float *t)
 	float denom;
 	float t2;
 	t_vector3 a;
-
+	
 	denom = vectorDot(&p->normal, &r->dir);
 	denom = -denom;
-    if (denom > 0.001f)
-	{
+	if (denom > 0.001f)
+    {
 		a = vectorSub(&p->origin, &r->ori);
-        t2 = vectorDot(&a, &p->normal) / denom;
-	t2 = -t2;
+		t2 = vectorDot(&a, &p->normal) / denom;
+		t2 = -t2;
 		if (t2 < t[1] && t2 >= 0)
 		{
 			t[1] = t2;
 			return (true);
 		}
-	}
+    }
 	return (false);
 }
 
-float *intersect(t_ray *r, t_primlist *prim)
+float *intersect(t_ray *r, t_primlist *prim, float lightdist)
 {
 	int i;
 	float *rslt; // selected prim / hit distance / type of prim
-	
+
 	rslt = (float *)malloc(sizeof(float) * 3);
 	rslt[0] = -1; // prim id
 	rslt[1] = RAY_MAX_RANGE; // hit distance
 	rslt[2] = -1; // 0 = Sphere / 1 = Plan / 2 = Cone / 3 = Cylindre
 	i = -1;
+
 	while (++i < prim->nbspheres)
 	{
 		if (intersectRaySphere(r, &prim->s[i], rslt))
@@ -93,6 +94,17 @@ float *intersect(t_ray *r, t_primlist *prim)
 		{
 			rslt[0] = i;
 			rslt[2] = 1;
+		}
+	}
+	if (lightdist != -1)
+	{
+		if (rslt[1] < lightdist)
+			return (rslt);
+		else
+		{
+			rslt[0] = -1;
+			rslt[1] = RAY_MAX_RANGE;
+			rslt[2] = -1;
 		}
 	}
 	return (rslt);
